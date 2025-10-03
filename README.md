@@ -18,14 +18,14 @@
 
 #### Pwn
 
-- [Повышение уровня в одиночку](categories/pwn/pwn-easy-rnd/solution/writeup.md)
+- [Factory](Factory/writeup.md)
 
 
 #### Reverse
 
-- [Машина времени](categories/reverse/rev-easy-time_machine/solution/writeup.md)
-- [Экскурсия](categories/reverse/rev-hard-excursion/solution/writeup.md)
-- [Поломанная матрёшка](categories/reverse/rev-medium-Broken_Matryoshka/solution/writeup.md)
+- [Warmup](Warmup/writeup.md)
+- [Поломанный](Поломанный/writeup.md)
+- [Flag Hider](Flag%20Hider/writeup.md)
 
 
 #### Web

@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+
+def ror8(x: int, r: int) -> int:
+    r &= 7
+    return ((x >> r) | ((x << (8 - r)) & 0xFF)) & 0xFF
+
+def decode(arr: list[int], key: bytes = b"\x13\x37\x42\x99") -> str:
+    out = []
+    for i, t in enumerate(arr):
+        rot = i % 5
+        tr = ror8(t, rot)
+        tr = (tr - i * 3) & 0xFF
+        ch = tr ^ key[i % len(key)]
+        out.append(ch)
+    return bytes(out).decode("utf-8")
+
+key = b"\x13\x37\x42\x99"
+arr = [
+    0x60, 0x8c, 0x9c, 0xb7, 0x18, 0x5b, 0x7a, 0x08, 0xc3, 0x38, 0x4b,
+    0x30, 0x8e, 0xab, 0x74, 0x25, 0xf8, 0xcd, 0xca, 0x42, 0xba, 0x03,
+    0xd1, 0x58, 0x0c, 0x9d, 0xea, 0xe8, 0x05, 0x5b, 0x90, 0x46, 0x1b,
+    0x55, 0x9c, 0x4d
+]
+
+if __name__ == "__main__":
+    print(decode(arr, key=key))
