@@ -1,0 +1,12 @@
+uvicorn
+fastapi
+sqlalchemy
+databases
+werkzeug
+pyjwt
+pycryptodome
+pydantic
+pydantic-settings
+sqlmodel
+psycopg2-binary 
+jinja2

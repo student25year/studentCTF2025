@@ -1,0 +1,85 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    height: 370px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 0 0 5px #f59e0b, 0 0 10px #f59e0b, 0 0 15px #f59e0b;
+    }
+    50% {
+        text-shadow: 0 0 10px #f59e0b, 0 0 20px #f59e0b, 0 0 30px #f59e0b;
+    }
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    box-sizing: border-box;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #f59e0b;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-sizing: border-box;
+}
+.error-message {
+    height: 40px; /* Фиксированная высота для сообщения об ошибке */
+    color: red; /* Цвет текста сообщения об ошибке */
+    margin-bottom: 10px; /* Отступ снизу */
+    text-align: center; /* Центрирование текста */
+}
+
+.form-container button:hover {
+    background: #d68a0b;
+}
+
+.form-container input,
+.form-container button {
+    height: 50px;
+}
+
+.toggle-link {
+    margin-top: 10px;
+    cursor: pointer;
+    color: #f59e0b;
+}

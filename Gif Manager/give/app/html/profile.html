@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - GIF Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .profile-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .profile-header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2em;
+        }
+
+        .profile-content {
+            padding: 30px;
+        }
+
+        .profile-info {
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: between;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: #6c757d;
+            word-break: break-all;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .profile-actions {
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">👤</div>
+            <h1>User Profile</h1>
+            <p>Manage your account information</p>
+        </div>
+
+        <div class="profile-content">
+            <div id="message" class="message"></div>
+
+            <div class="profile-info">
+                <div class="info-item">
+                    <span class="info-label">User ID:</span>
+                    <span class="info-value" id="userId">Loading...</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Username:</span>
+                    <span class="info-value" id="username">Loading...</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Status:</span>
+                    <span class="info-value">
+                        <span id="userStatus" class="user-status status-active">Active</span>
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Member since:</span>
+                    <span class="info-value" id="memberSince">Loading...</span>
+                </div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="uploadsCount">0</div>
+                    <div class="stat-label">Uploads</div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a href="/" class="btn btn-back">← Back to Main</a>
+                <button class="btn btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        function getAuthToken() {
+            const token = localStorage.getItem('access_token');
+            return {
+                'Authorization': `Bearer ${token}`,
+            };
+        }
+
+        async function loadProfile() {
+            const messageEl = document.getElementById('message');
+
+            try {
+                messageEl.style.display = 'block';
+                messageEl.className = 'message loading';
+                messageEl.textContent = 'Loading profile...';
+
+                const response = await fetch(`${API_BASE}/profile/`, {
+                    method: 'GET',
+                    headers: getAuthToken()
+                });
+
+                if (response.status === 401) {
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const userData = await response.json();
+                displayProfile(userData);
+
+                messageEl.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                messageEl.className = 'message error';
+                messageEl.textContent = 'Error loading profile: ' + error.message;
+            }
+        }
+
+        function displayProfile(userData) {
+            console.log('User data:', userData);
+
+            document.getElementById('userId').textContent = userData.id || 'N/A';
+            document.getElementById('username').textContent = userData.username || 'N/A';
+
+            const statusElement = document.getElementById('userStatus');
+            statusElement.className = 'user-status status-active';
+            statusElement.textContent = 'Active';
+
+            if (userData.created_at) {
+                document.getElementById('memberSince').textContent =
+                    new Date(userData.created_at).toLocaleDateString();
+            } else {
+                document.getElementById('memberSince').textContent = 'N/A';
+            }
+
+            document.getElementById('uploadsCount').textContent = userData.gifs_count;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('access_token');
+                window.location.href = '/login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            loadProfile();
+        });
+
+        window.loadProfile = loadProfile;
+        window.logout = logout;
+    </script>
+</body>
+
+</html>

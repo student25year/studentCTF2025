@@ -1,0 +1,87 @@
+/* Эффекты для кнопок */
+button {
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #fbbf24; /* Изменение цвета фона при наведении */
+    transform: scale(1.05); /* Увеличение размера кнопки */
+}
+
+button:active {
+    transform: scale(0.95); /* Уменьшение размера кнопки при нажатии */
+}
+
+/* Добавление тени */
+button {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.title-font {
+    transition: transform 0.3s ease;
+}
+
+.title-font:hover {
+    transform: scale(1.1); /* Увеличение текста при наведении */
+}
+    /* Эффекты для карт */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0; /* Начальная непрозрачность для анимации */
+    transform: translateY(-20px); /* Начальная позиция для анимации */
+}
+
+.card.show {
+    opacity: 1; /* Полная непрозрачность при показе */
+    transform: translateY(0); /* Возвращение в исходное положение */
+}
+
+.card:hover {
+    transform: scale(1.1) rotateY(10deg); /* Увеличение и поворот при наведении */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Тень при наведении */
+}
+#cards-container, #dealer-cards-container {
+    transition: opacity 0.5s ease;
+    opacity: 0; /* Начальная непрозрачность */
+}
+
+#cards-container.show, #dealer-cards-container.show {
+    opacity: 1; /* Полная непрозрачность при показе */
+}
+/* Эффекты для банкролла и ставки */
+.bankroll, .bet {
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.bankroll {
+    font-size: 1.5rem; /* Увеличение размера шрифта для банкролла */
+}
+
+.bet {
+    font-size: 1.5rem; /* Увеличение размера шрифта для ставки */
+}
+
+.highlight {
+    color: #fbbf24; /* Цвет для выделения */
+    transform: scale(1.1); /* Увеличение при изменении */
+}
+/* Эффекты для заголовков */
+.title {
+    transition: color 0.3s ease, transform 0.3s ease;
+    font-size: 1.5rem; /* Размер шрифта */
+    opacity: 0; /* Начальная непрозрачность для анимации */
+    transform: translateY(-20px); /* Начальная позиция для анимации */
+}
+
+.title.show {
+    opacity: 1; /* Полная непрозрачность при показе */
+    transform: translateY(0); /* Возвращение в исходное положение */
+}
+
+.title:hover {
+    color: #fbbf24; /* Цвет текста при наведении */
+    transform: scale(1.05); /* Увеличение текста при наведении */
+}

@@ -1,0 +1,82 @@
+  
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    color: #f8fafc;
+    overflow-x: hidden;
+}
+
+.title-font {
+    font-family: 'Playfair Display', serif;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.chip {
+    animation: float 3s ease-in-out infinite;
+}
+
+.card-animation {
+    animation: deal 0.5s ease-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes deal {
+    0% { transform: translateX(-100px) rotate(-10deg); opacity: 0; }
+    100% { transform: translateX(0) rotate(0); opacity: 1; }
+}
+
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 0 15px #f59e0b;
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    transition: all 0.3s;
+}
+
+.btn-glow:hover::after {
+    left: 100%;
+}
+
+.neon-text {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #f59e0b, 0 0 20px #f59e0b;
+    animation: flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #f59e0b, 0 0 20px #f59e0b;
+    }
+    20%, 24%, 55% {        
+        text-shadow: none;
+    }
+}

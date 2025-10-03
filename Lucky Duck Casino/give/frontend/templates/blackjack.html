@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блэкджек - Lucky Duck Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/styles_index.css" />
+    <link rel="stylesheet" href="/static/css/styles_blackjack.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap');
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-900 text-white">
+    <!-- Animated Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-10 left-1/4 w-16 h-16 rounded-full bg-yellow-500 opacity-20 blur-xl"></div>
+        <div class="absolute top-1/3 right-1/5 w-24 h-24 rounded-full bg-red-500 opacity-20 blur-xl"></div>
+        <div class="absolute bottom-1/4 left-1/5 w-20 h-20 rounded-full bg-green-500 opacity-20 blur-xl"></div>
+        <div class="absolute bottom-10 right-1/4 w-12 h-12 rounded-full bg-blue-500 opacity-20 blur-xl"></div>
+    </div>
+    <!-- Header -->
+    <header class="relative z-10 py-6 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-dice text-3xl text-yellow-400"></i>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white">Lucky Duck Casino</h1>
+            </div>
+            <div class="md:flex items-center space-x-4">
+                <button id="logoutButton" class="px-4 py-2 bg-red-500 text-white font-bold rounded-full text-lg transition-all duration-300 hover:bg-red-600">
+                    Выйти
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center relative z-10 px-4">
+        <div class="container mx-auto max-w-6xl text-center">
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 title-font neon-text">
+                Игра в Блэкджек
+            </h2>
+            <div id="dealer-message" class="title text-lg sm:text-xl text-gray-300 mb-8"></div>
+            <div id="dealer-cards-container" class="flex justify-center mb-6"></div>
+            <div id="main-cards-message" class="title text-lg sm:text-xl text-gray-300 mb-8"></div>
+            <div id="cards-container" class="flex justify-center mb-6"></div>
+            <div id="bet-input-container" class="hidden mb-6">
+                <input type="number" id="bet-input" class="px-4 py-2 rounded" placeholder="Введите ставку" min="50" style="color: #333; font-size: 16px; background-color: #f9f9f9; border: 1px solid #ccc;"/>
+                <button id="bet-button" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded ml-2">
+                    Подтвердить ставку
+                </button>
+            </div>
+            <div id="action-buttons" class="hidden">
+                <button id="more-button" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded mr-2">
+                    Ещё
+                </button>
+                <button id="enough-button" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded mr-2">
+                    Хватит
+                </button>
+                <button id="sorendo-button" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded">
+                    Сорендо
+                </button>
+            </div>
+            <div id="continue-container" class="hidden mb-6">
+                <button id="continue-button" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded mr-2">
+                    Продолжить игру
+                </button>
+            </div>
+            <div id="propusk" class="text-lg sm:text-xl text-gray-300 mb-8"></div>
+            
+            <div id="double-container" class="hidden mb-6">
+                <input type="number" id="double-bet-input" class="px-4 py-2 rounded" placeholder="Введите дополнительную ставку" min="50" style="color: #333; font-size: 16px; background-color: #f9f9f9; border: 1px solid #ccc;"/>
+                <button id="double-button" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded ml-2">
+                    Дабл
+                </button>
+            </div>
+            <div id="bankroll-message" class="bankroll text-lg sm:text-xl text-gray-300 mb-8"></div>
+            <div id="message" class="bet text-lg sm:text-xl text-gray-300 mb-8"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-6 px-4 sm:px-6 lg:px-8 bg-opacity-20 mt-12">
+        <div class="container mx-auto">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center space-x-2 mb-2">
+                    <i class="fas fa-dice text-xl text-yellow-400"></i>
+                    <span class="text-white">Lucky Duck Casino</span>
+                </div>
+                <div class="text-gray-400 text-sm text-center">
+                    <p>© 2025 Lucky Duck Casino. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/static/js/api_blackjack.js"></script>
+    <script>
+
+        async function startGame() {
+            document.getElementById('dealer-message').classList.add('hidden');
+            document.getElementById('main-cards-message').classList.add('hidden');
+            document.getElementById('dealer-cards-container').classList.add('hidden');
+            document.getElementById('continue-container').classList.add('hidden');
+            const bankrollResponse = await api_get_put('/api/get_bankroll', 'GET');
+            const bankrollMessage = document.getElementById('bankroll-message');
+
+            if (bankrollResponse.statusCode === 200) {
+                const bankroll = bankrollResponse.data.bankroll;
+                bankrollMessage.textContent = `Ваш текущий банкролл: ${bankroll} $`;
+
+                if (bankroll < 50) {
+                    window.location.href = '/lose';
+                } else if (bankroll > 1000000) {
+                    window.location.href = '/flag';
+                } else {
+                    document.getElementById('sorendo-button').classList.remove('hidden');
+                    await loadCards();
+                }
+            } else if (bankrollResponse.statusCode === 403){
+                window.location.href = '/';
+                document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+            } else {
+                bankrollMessage.textContent = 'Ошибка при получении банкролла.';
+            }
+        }
+
+        async function loadCards() {
+            const cardsResponse = await api_get_put('/api/get_cards', 'GET');
+
+            if (cardsResponse.statusCode === 424) {
+                document.getElementById('bet-input-container').classList.remove('hidden');
+                document.getElementById('action-buttons').classList.add('hidden');
+                document.getElementById('message').textContent = '';
+                displayCards([]);
+            } else if (cardsResponse.statusCode === 200) {
+                const { on_hands, dealer, bankroll, bet } = cardsResponse.data;
+                displayCards(on_hands);
+                displayCards(dealer, 'dealer-cards-container')
+                document.getElementById('cards-container').classList.add('show');
+                document.getElementById('dealer-cards-container').classList.add('show');
+                document.getElementById('dealer-message').textContent = 'Карты дилера:'
+                document.getElementById('main-cards-message').textContent = 'Ваши карты:'
+
+                document.getElementById('dealer-message').classList.add('show');
+                document.getElementById('main-cards-message').classList.add('show');
+
+                // document.getElementById('bankroll-message').textContent = `Ваш текущий банкролл: ${bankroll} $`;
+                const bankrollMessage = document.getElementById('bankroll-message');
+                bankrollMessage.textContent = `Ваш текущий банкролл: ${bankroll} $`;
+                bankrollMessage.classList.add('highlight'); // Добавление эффекта выделения
+                setTimeout(() => {
+                    bankrollMessage.classList.remove('highlight'); // Удаление эффекта через 1 секунду
+                }, 1000);
+
+                // document.getElementById('message').textContent = `Ставка: ${bet} $`;
+                const message = document.getElementById('message');
+                message.textContent = `Ставка: ${bet} $`;
+                message.classList.add('highlight'); // Добавление эффекта выделения
+                setTimeout(() => {
+                    message.classList.remove('highlight'); // Удаление эффекта через 1 секунду
+                }, 1000);
+                document.getElementById('action-buttons').classList.remove('hidden');
+                document.getElementById('dealer-message').classList.remove('hidden');
+                document.getElementById('main-cards-message').classList.remove('hidden');
+                document.getElementById('dealer-cards-container').classList.remove('hidden');
+                
+                if (on_hands.length > 2) {
+                    document.getElementById('sorendo-button').classList.add('hidden');
+                } else {
+                    document.getElementById('sorendo-button').classList.remove('hidden');
+                }
+                
+                const checkDoubleResponse = await api_get_put('/api/check_double', 'GET');
+                if (checkDoubleResponse.statusCode === 200 && checkDoubleResponse.data.msg === true && on_hands.length === 2) {
+                    document.getElementById('double-container').classList.remove('hidden');
+                } else {
+                    document.getElementById('double-container').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('message').textContent = 'Ошибка при получении карт.';
+            }
+        }
+
+        async function finalgame(on_hands, dealer, bankroll){
+            document.getElementById('action-buttons').classList.add('hidden');
+            document.getElementById('double-container').classList.add('hidden');
+            document.getElementById('continue-container').classList.remove('hidden');
+            displayCards(on_hands);
+            displayCards(dealer, 'dealer-cards-container')
+            document.getElementById('bankroll-message').textContent = `Ваш текущий банкролл: ${bankroll} $`;
+            document.getElementById('dealer-message').textContent = 'Карты дилера:'
+            document.getElementById('main-cards-message').textContent = 'Ваши карты:'
+        }
+
+        async function displayCards(cards, name_field = 'cards-container') {
+            const cardsContainer = document.getElementById(name_field);
+            cardsContainer.innerHTML = ''; // Очищаем контейнер
+
+            cards.forEach(card => {
+                const cardImage = document.createElement('img');
+                cardImage.src = `/static/cards/${card}.png`; // Путь к изображению карты
+                cardImage.alt = card;
+                cardImage.className = 'card w-16 h-24 mx-2'; // Размер карты
+                cardsContainer.appendChild(cardImage);
+
+                setTimeout(() => {
+                    cardImage.classList.add('show');
+                }, 5); // Задержка для плавного появления
+            });
+        }
+        
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = "/";
+        });
+
+        document.getElementById('bet-button').addEventListener('click', async () => {
+            const betInput = document.getElementById('bet-input');
+            const bet = parseInt(betInput.value, 10);
+
+            if (isNaN(bet) || bet < 50) {
+                document.getElementById('message').textContent = 'Ставка должна быть больше либо равна 50.';
+                return;
+            }
+
+            const betResponse = await set_bet_and_double('/api/bet', bet, 'bet');
+
+            if (betResponse.statusCode === 200) {
+                document.getElementById('bet-input-container').classList.add('hidden');
+                loadCards();
+            } else {
+                document.getElementById('message').textContent = betResponse.data.msg;
+            }
+        });
+
+        document.getElementById('more-button').addEventListener('click', async () => {
+            const moreResponse = await api_get_put('/api/more_button', 'PUT');
+            if (moreResponse.statusCode === 200) {
+                loadCards();
+            } else {
+                document.getElementById('message').textContent = moreResponse.data.msg ;
+            }
+        });
+
+        document.getElementById('enough-button').addEventListener('click', async () => {
+            const enoughResponse = await api_get_put('/api/enough_button', 'PUT');
+            if (enoughResponse.statusCode === 200) {
+                const { on_hands, dealer, bankroll} = enoughResponse.data;
+                document.getElementById('message').textContent = enoughResponse.data.msg;
+                finalgame(on_hands, dealer, bankroll);
+            } else {
+                document.getElementById('message').textContent = 'Ошибка при завершении игры.';
+            }
+        });
+
+        document.getElementById('sorendo-button').addEventListener('click', async () => {
+            const sorendoResponse = await api_get_put('/api/sorendo_button', 'PUT');
+            if (sorendoResponse.statusCode === 200) {
+                const { on_hands, dealer, bankroll} = sorendoResponse.data;
+                document.getElementById('message').textContent = sorendoResponse.data.msg;
+                finalgame(on_hands, dealer, bankroll);
+            } else {
+                document.getElementById('message').textContent = 'Ошибка при выполнении действия Сорендо.';
+            }
+        });
+
+        document.getElementById('continue-button').addEventListener('click', startGame);
+
+        document.getElementById('double-button').addEventListener('click', async () => {
+            const doubleBetInput = document.getElementById('double-bet-input');
+            const doubleBet = parseInt(doubleBetInput.value, 10);
+
+            if (isNaN(doubleBet) || doubleBet < 50) {
+                document.getElementById('message').textContent = 'Дополнительная ставка должна быть больше либо равна 50.';
+                return;
+            }
+
+            const doubleResponse = await set_bet_and_double('/api/bet_double', doubleBet, 'bet_double');
+
+            if (doubleResponse.statusCode === 200) {
+                const { on_hands, dealer, bankroll} = doubleResponse.data;
+                document.getElementById('message').textContent = doubleResponse.data.msg;
+                finalgame(on_hands, dealer, bankroll);
+            } else {
+                document.getElementById('message').textContent = doubleResponse.data.msg;
+            }
+        });
+
+        // Запускаем игру при загрузке страницы
+        window.onload = startGame;
+    </script>
+</body>
+</html>
